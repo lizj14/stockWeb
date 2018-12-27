@@ -58,6 +58,7 @@ def judge(stock_name, result_list):
         'unreliable': unreliable_value(count_value),
     }
     
+    
 def unreliable_value(count_value):
     return 0 if count_value >= 5 else 100 - count_value * 20
 

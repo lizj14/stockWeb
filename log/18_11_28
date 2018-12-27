@@ -1,0 +1,11 @@
+lizj: run success. run the project, and use preview to see the website.
+
+if 'DisallowedHost', add the host to the settings.py as pointed.
+init git
+
+Attention: Django is for web development, not for real project. from the doc of Django
+
+need to be able to open from website
+
+    succeed in adding a new app
+    next work: run the project and set the model

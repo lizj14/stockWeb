@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Stock Predict</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/Aristochart.js"></script>
+    <style>
+        body {
+            padding: 200px;
+            background: #5bc0de;
+        }
+        div{margin: 30px;border: 0px;padding: 0px}
+        h1{
+            margin: 30px;
+            border: 0px;
+            padding: 0px;
+        }
+    </style>
+
+    <scri..pt src="//code.jquery.com/jquery-1.11.3.min.js"></scri..pt>
+</head>
+<body>
+<h1 id="title_result" class="text-center">未来30天走势</h1>
+<div class="col-lg-4">
+        <canvas id="stock_price_going" class="col-lg-12">
+        </canvas>
+        <script type="text/javascript">
+                //定义图表数据
+                var uriage = {{pre_price|safe}};
+                console.log(uriage)
+                console.log(typeof(uriage))
+                drawChart3(uriage);
+                
+                //绘制折线数据图表的函数
+                function drawChart(data){
+                    //获取上下文
+                    var canvas=document.getElementById("stock_price_going");
+                    var ctx=canvas.getContext("2d");
+                    //描绘背景
+                    var gradient=ctx.createLinearGradient(0,0,0,300);
+                    gradient.addColorStop(0,"#e0e0e0");
+                    gradient.addColorStop(1,"#ffffff");
+                    ctx.fillStyle=gradient;
+                    ctx.fillRect(0,0,canvas.width,canvas.height);
+                    //计算坐标
+                    var grid_cols=data.length+1;
+                    var grid_rows=4;
+                    var cell_width=canvas.width/grid_cols;
+                    var cell_height=canvas.height/grid_rows;
+                    //绘制背景的方格线
+                    ctx.beginPath();
+                    for(var row=0;row<=grid_rows;row++)
+                    {
+                        var y=row*cell_height;
+                        ctx.moveTo(0,y);
+                        ctx.lineTo(canvas.width,y);
+                    }
+                    for(var col=0;col<grid_cols;col++)
+                    {
+                        var x=col*cell_width;
+                        ctx.moveTo(x,0);
+                        ctx.lineTo(x,canvas.height);
+                    }
+                    ctx.lineWidth=1;ctx.strokeStyle="#c0c0c0";
+                    ctx.stroke();
+                    //获取数据中最大值
+                    var max_v=0;
+                    for(var i=0;i<data.length;i++)
+                    {
+                        if(data[i]>max_v)
+                            max_v=data[i];
+                    }
+                    //为了能让最大值能容纳在图表内，计算坐标
+                    max_v=max_v*1.1;
+                    //将数据转换为坐标
+                    var points=[];
+                    for(var i=0;i<data.length;i++)
+                    {
+                        var v=data[i];
+                        var px=cell_width*(1+i);
+                        var py=canvas.height-canvas.height*(v/max_v);
+                        points.push({"x":px,"y":py});
+                    }
+                    //描绘折线
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x,points[0].y);
+                    for(var i=1;i<points.length;i++)
+                    {
+                        ctx.lineTo(points[i].x,points[i].y);
+                    }
+                    ctx.lineWidth=2;
+                    ctx.strokeStyle="#ee0000";
+                    ctx.stroke();
+                    //绘制坐标图形（坐标对于一红色圈圈）
+                    for(var i in points)
+                    {
+                        var p=points[i];
+                        ctx.beginPath();
+                        ctx.arc(p.x,p.y,6,0,2*Math.PI);
+                        ctx.fillStyle="#ee0000";
+                        ctx.fill();
+                    }
+                }
+                function drawChart2(data){
+                var cv = document.getElementById("stock_price_going");
+                cv.width = 600;
+                cv.height = 400;
+                cv.style.border = "2px solid red";
+                var ctx = cv.getContext("2d");
+                getBrokenLine(data, "#f00",cv,ctx);
+            }
+                function getBrokenLine(data, color,cv,ctx) {
+                var maxNum = Math.max.apply(null, data);    //求数组中的最大值
+                 var padding = 20,  //边距
+                 x0 = padding,  //原点x轴坐标
+                 y0 = cv.height - padding,  //原点y轴坐标
+                 xArrow_x = padding, //x轴箭头处坐标x
+                 xArrow_y = padding, //x轴箭头处坐标y
+                 yArrow_x = cv.width - padding,  //y轴箭头处坐标x
+                yArrow_y = cv.height - padding, //y轴箭头处坐标y
+                arrowWidth = 10,    //箭头的宽度
+                xLength = cv.width - 2*padding - arrowWidth,    //x轴的长度
+                yLength = cv.height - 2*padding - arrowWidth,  //y轴的长度
+                pointsWidth = xLength/(data.length + 1);    //折线上每个点之间的距离
+
+                ctx.beginPath();//控制绘制的折线不受坐标轴样式属性的影响
+                //绘制x轴
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(xArrow_x, xArrow_y);
+                ctx.moveTo(xArrow_x, xArrow_y);
+                ctx.lineTo(xArrow_x - arrowWidth, xArrow_y + arrowWidth);
+                ctx.moveTo(xArrow_x, xArrow_y);
+                ctx.lineTo(xArrow_x + arrowWidth, xArrow_y + arrowWidth);
+
+                //绘制y轴
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(yArrow_x, yArrow_y);
+                ctx.moveTo(yArrow_x, yArrow_y);
+                ctx.lineTo(yArrow_x - arrowWidth, yArrow_y - arrowWidth);
+                ctx.moveTo(yArrow_x, yArrow_y);
+                ctx.lineTo(yArrow_x - arrowWidth, yArrow_y + arrowWidth);
+                ctx.strokeStyle = "#000";
+
+                //中断（坐标轴和折线的）连接
+                ctx.stroke();
+                ctx.beginPath();
+
+                //绘制折线
+                for (var i = 0; i < data.length; i++) {
+                    var pointX = padding + (i + 1) * pointsWidth;
+                    var pointY = padding + arrowWidth + (1 - data[i]/maxNum) * yLength;
+                    ctx.lineTo(pointX, pointY);
+                }
+                ctx.strokeStyle = color;
+                ctx.stroke();
+            }
+                function drawChart3(data){
+                    window.graph=new Aristochart(document.body,{
+                        style:{
+                            default:{
+                                axis:{
+                                    y:{
+                                        fixed:false
+                                    },
+                                    x:{
+                                        fixed:false
+                                    }
+                                },
+                                tick:{
+                                    x:{
+                                        fixed:false
+                                    },
+                                    y:{
+                                        fixed:false
+                                    }
+                                },
+                                label:{
+                                    x:{
+                                        fixed:false
+                                    },
+                                    y:{
+                                        fixed:false
+                                    }
+                                }
+                            }
+                        },
+                        data:{
+                            x:[0,29],
+                            y:data
+                        }
+                    });
+                }
+            </script>
+    </div>
+
+<div class="col-lg-6">
+    <div class="col-lg-3">
+    <script type="text/javascript">
+        var mW = 330;
+        var mH = 330;
+        var mData = [['0', 77],
+            ['1', 72],
+            ['2', 46],
+            ['3', 50],
+            ['5', 60]];
+        var mCount = mData.length; //边数
+        var mCenter = mW /2; //中心点
+        var mRadius = mCenter - 50; //半径(减去的值用于给绘制的文本留空间)
+        var mAngle = Math.PI * 2 / mCount; //角度
+        var mCtx = null;
+        var mColorPolygon = '#B8B8B8'; //多边形颜色
+        var mColorLines = '#B8B8B8'; //顶点连线颜色
+        var mColorText = '#000000';
+
+        //初始化
+        (function(){
+            var canvas = document.createElement('canvas');
+            document.body.appendChild(canvas);
+            canvas.height = mH;
+            canvas.width = mW;
+            mCtx = canvas.getContext('2d');
+
+            drawPolygon(mCtx);
+            drawLines(mCtx);
+            drawText(mCtx);
+            drawRegion(mCtx);
+            drawCircle(mCtx);
+        })();
+
+        // 绘制多边形边
+        function drawPolygon(ctx){
+            ctx.save();
+
+            ctx.strokeStyle = mColorPolygon;
+            var r = mRadius/ mCount; //单位半径
+            //画6个圈
+            for(var i = 0; i < mCount; i ++){
+                ctx.beginPath();
+                var currR = r * ( i + 1); //当前半径
+                //画6条边
+                for(var j = 0; j < mCount; j ++){
+                    var x = mCenter + currR * Math.cos(mAngle * j);
+                    var y = mCenter + currR * Math.sin(mAngle * j);
+
+                    ctx.lineTo(x, y);
+                }
+                ctx.closePath()
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        //顶点连线
+        function drawLines(ctx){
+            ctx.save();
+
+            ctx.beginPath();
+            ctx.strokeStyle = mColorLines;
+
+            for(var i = 0; i < mCount; i ++){
+                var x = mCenter + mRadius * Math.cos(mAngle * i);
+                var y = mCenter + mRadius * Math.sin(mAngle * i);
+
+                ctx.moveTo(mCenter, mCenter);
+                ctx.lineTo(x, y);
+            }
+
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        //绘制文本
+        function drawText(ctx){
+            ctx.save();
+            var fontSize = mCenter / 12;
+            ctx.font = fontSize + 'px Microsoft Yahei';
+            ctx.fillStyle = mColorText;
+
+            for(var i = 0; i < mCount; i ++){
+                var x = mCenter + mRadius * Math.cos(mAngle * i);
+                var y = mCenter + mRadius * Math.sin(mAngle * i);
+
+                if( mAngle * i >= 0 && mAngle * i <= Math.PI / 2 ){
+                    ctx.fillText(mData[i][0], x, y + fontSize);
+                }else if(mAngle * i > Math.PI / 2 && mAngle * i <= Math.PI){
+                    ctx.fillText(mData[i][0], x - ctx.measureText(mData[i][0]).width, y + fontSize);
+                }else if(mAngle * i > Math.PI && mAngle * i <= Math.PI * 3 / 2){
+                    ctx.fillText(mData[i][0], x - ctx.measureText(mData[i][0]).width, y);
+                }else{
+                    ctx.fillText(mData[i][0], x, y);
+                }
+
+            }
+
+            ctx.restore();
+        }
+
+        //绘制数据区域
+        function drawRegion(ctx){
+            ctx.save();
+
+            ctx.beginPath();
+            for(var i = 0; i < mCount; i ++){
+                var x = mCenter + mRadius * Math.cos(mAngle * i) * mData[i][1] / 100;
+                var y = mCenter + mRadius * Math.sin(mAngle * i) * mData[i][1] / 100;
+
+                ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        //画点
+        function drawCircle(ctx){
+            ctx.save();
+
+            var r = mCenter / 18;
+            for(var i = 0; i < mCount; i ++){
+                var x = mCenter + mRadius * Math.cos(mAngle * i) * mData[i][1] / 100;
+                var y = mCenter + mRadius * Math.sin(mAngle * i) * mData[i][1] / 100;
+
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+    </script>
+    </div>
+</div>
+
+</body>
+</html>

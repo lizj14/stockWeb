@@ -1,0 +1,24 @@
+how to view from outside
+
+pub - id
+curl http://169.254.169.254/latest/meta-data/instance-id
+
+i-0496b9692e84880ee
+
+pub-ip
+curl http://169.254.169.254/latest/meta-data/public-ipv4
+54.255.246.76
+
+add TCP 8080 in EC2 management
+
+group id in security:
+sg-0a8ab6f5b01658be4
+
+subnet:
+subnet-db919792
+
+acl:
+acl-c57caba3
+add http(8080)
+
+succeed in open from website outside

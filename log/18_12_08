@@ -1,0 +1,13 @@
+continue to work on the Model of the website.
+
+python3 manage.py makemigrations searchStock
+    -> create model Stock, Method, User succeed.
+
+python3 manage.py sqlmigrate searchStock 0001
+    -> show the sql model. not achieve the order.
+
+research the API.
+
+rememeber to python3 manage.py migrate before test API.
+
+make new test for API

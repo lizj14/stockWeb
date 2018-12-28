@@ -139,7 +139,17 @@ def add_new_predict(stock_name, predict_value):
 def predict_new_data(stock_name, new_data_list):
     result = add_new_predict(stock_name, new_data_list)
     judge_result = judge(stock_name, result)
-    return result, judge_result
+
+    judge_list = [
+        judge_result['average'],
+        judge_result['median'],
+        judge_result['final'],
+        judge_result['std'],
+        judge_result['unreliable']
+    ]
+
+    # return result, judge_result
+    return result, judge_list
 
 # def predict_data_json(stock_name_in, start_date):
 #    predict_result = predict_data(stock_name_in, start_date)

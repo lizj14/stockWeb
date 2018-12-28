@@ -14,13 +14,14 @@ def stock_name_submit(request):
     if request.method=='POST':
         stock_name=request.POST.get("stock_name")
         
-        start_date=datetime.date(2003,5,5)
+        # start_date=datetime.date(2003,5,5)
         print(stock_name)
-        stock_price_attr1=modelReader.read_prices(stock_name,start_date)
+        # stock_price_attr1=modelReader.read_prices(stock_name,start_date)
+        stock_price_attr1 = modelReader.read_recent_prices(stock_name)
         stock_price_attr2=stock_price_attr1[0]
         print(len(stock_price_attr2))
         stock_price=','.join(str(i) for i in stock_price_attr2)
-        print(type(stock_price))
+        # print(type(stock_price))
         print(stock_price)
         return HttpResponse(stock_price)
 
@@ -42,7 +43,7 @@ def result(request):
             (pre_price2,value_result)=modelReader.predict_new_data(stock_name,new_price);
             print(type(pre_price2));
             for i in range(len(pre_price2)):
-                pre_price2[i]=pre_price2*100
+                pre_price2[i]=pre_price2[i]*100
             # print("new list 价格");
             # print(pre_price2);
             # print("评价");
@@ -54,4 +55,4 @@ def result(request):
             # print(pre_price)
             pre_price_json=json.dumps(pre_price)
             # print(pre_price_json)
-    return  render(request,"predict_result.html",{'pre_price':json.dumps(pre_price2)},)
+    return  render(request,"predict_result.html",{'pre_price':json.dumps(pre_price2),'value_result':json.dumps(value_result)},)

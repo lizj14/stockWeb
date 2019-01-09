@@ -201,11 +201,13 @@
     <script type="text/javascript">
         var mW = 330;
         var mH = 330;
-        var mData = [['0', 77],
-            ['1', 72],
-            ['2', 46],
-            ['3', 50],
-            ['5', 60]];
+        var eva_data = {{value_result|safe}};
+        console.log(eva_data);
+        var mData = [['平均涨幅', eva_data[0]],
+            ['风险', eva_data[1]],
+            ['最终期望', eva_data[2]],
+            ['涨幅中位数', eva_data[3]],
+            ['可靠性', eva_data[4]]];
         var mCount = mData.length; //边数
         var mCenter = mW /2; //中心点
         var mRadius = mCenter - 50; //半径(减去的值用于给绘制的文本留空间)

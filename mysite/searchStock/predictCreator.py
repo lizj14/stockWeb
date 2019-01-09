@@ -35,8 +35,8 @@ def add_predicts_for_stock(stock_name):
         price_list = stock.price_set.all()
         last_price = price_list[price_list.count()-1].price_close
         print('last price: %s' % last_price)
-        for i in range(0, 10):
-            ratio = 1.0 + (i-5)*0.02
+        for i in range(0, 5):
+            ratio = 1.0 + (i-5)*0.04
             print('group %s for %s: %s' % (i, stock_name, last_price*ratio))
             sm.add_new_predict(stock_name, last_price*ratio)
     except Exception as e:

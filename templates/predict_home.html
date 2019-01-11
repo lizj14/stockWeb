@@ -19,7 +19,7 @@
     <scri..pt src="//code.jquery.com/jquery-1.11.3.min.js"></scri..pt>
 </head>
 <body>
-<div class="text-center"><font size="10">股票预测模型</font></div>
+<div class="text-center"><font size="10">在线股票预测</font></div>
 <div class="starter" id="home" style="float: left;width: 100%;">
     <div class="col-lg-1 text-center">
         <label for="choose_stock">选择股票:</label>
@@ -225,9 +225,9 @@
     </div>
     <div class="col-lg-2 ">
         <select id="choose_model" class="form-control">
-            <option value="model_A">model A</option>
-            <option value="model_B">model B</option>
-            <option value="model_C">model C</option>
+            <option value="model_A">LSTM</option>
+            <option value="model_B">LSTM</option>
+            <option value="model_C">LSTM</option>
         </select>
     </div>
     <div class="col-lg-1 col-lg-offset-1">
@@ -263,10 +263,11 @@
 
 <div id="middle" style="float: left;width: 100%;">
     <div class="col-lg-4">
-        <h1>在线预测</h1>
+        <h1>输入新价格</h1>
+        <label for="information">注：请在下方输入新数据，新的数据和数据库中的历史价格一起被用来预测未来历史走向，增加预测可靠性。例如输入:11.11,22.22,33.33。输入数据后点击生成预测会生成未来30天的预测结果</label>
         <div class="col-lg-12">
-        <div id="stock_name" class="col-lg-3">
-            <label for="stock_name" class="glyphicon-font"><font size="3">输入价格:</font></label>
+        <div id="stock_name" >
+            <label for="stock_name" class="glyphicon-font" defaultVaule><font size="3">输入最新数据（浮点数）:</font></label>
         </div>
         <div class="col-lg-3 text-center">
             <input type="text" id="new_price" name="date_input"/>
@@ -275,6 +276,7 @@
     </div>
     <div class="col-lg-4">
         <h1>历史价格走向</h1>
+        <label for="his_information">以下价格为数据库中最新三十天价格，每一个点代表一天</label>
         <canvas id="stock_price_going">
         </canvas>
     </div>

@@ -30,4 +30,4 @@ Following are the interfaces:
 <img src="/pic/judge.png" width="700">
 
 Coverage test result:
-[coverage test](https://htmlpreivew.github.com/?https://github.com/lizj14/stockWeb/coverage_test/index.html)
+[coverage test](http://htmlpreivew.github.com/?https://github.com/lizj14/stockWeb/coverage_test/index.html)

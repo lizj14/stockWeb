@@ -29,9 +29,9 @@ Following are the interfaces:
 * The prediction result:
 <img src="/pic/judge.png" width="700">
 
-Coverage test result:
+* Coverage test result:
 <img src="/pic/coverage.png" width="700">
 
-important file analysis:
+* important file analysis:
 <img src="/pic/statements.png" width="700">
 For more information, please turn to html in coverage_test

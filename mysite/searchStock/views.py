@@ -20,7 +20,7 @@ def stock_name_submit(request):
         stock_price_attr2=stock_price_attr1[0]
         print(len(stock_price_attr2))
         stock_price=','.join(str(i) for i in stock_price_attr2)
-        print(type(stock_price))
+        # print(type(stock_price))
         print(stock_price)
         return HttpResponse(stock_price)
 
@@ -58,3 +58,4 @@ def result(request):
             # pre_price_json=json.dumps(pre_price)
             # print(pre_price_json)
     return  render(request,"predict_result.html",{'pre_price':json.dumps(pre_price2),'value_result':json.dumps(value_result)},)
+

@@ -145,7 +145,9 @@ def predict_new_data(stock_name, new_data_list):
         judge_result['final'],
         judge_result['std'],
         judge_result['unreliable']
-        ]
+    ]
+
+    # return result, judge_result
     return result, judge_list
 
 # def predict_data_json(stock_name_in, start_date):
